@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Entidades;
+using Servicios;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,10 +10,14 @@ namespace IntroMVC.Controllers
 {
     public class AlimentosController : Controller
     {
+
+        AlimentosServicio AlimentosServicio = new AlimentosServicio();
         // GET: Alimentos/todos
         public ActionResult Todos()
         {
-            return View();
+            List<Alimento> todos = AlimentosServicio.ObtenerTodos();
+            return View(todos);
+            
         }
 
         
@@ -22,15 +28,25 @@ namespace IntroMVC.Controllers
             return View();
         }
 
+        // GET: Alimentos/Crear
+        public ActionResult Crear()
+        {
+            return View();
+        }
+
         // POST: Alimentos/Crear
         [HttpPost]
         public ActionResult Crear(FormCollection collection)
         {
             try
             {
-                // TODO: Add insert logic here
+                Alimento alimento = new Alimento();
+                alimento.Nombre = collection["Nombre"];
+                alimento.Nombre = collection["Peso"];
 
-                return RedirectToAction("Index");
+                AlimentosServicio.Crear(alimento);
+
+                return RedirectToAction("Todos");
             }
             catch
             {
